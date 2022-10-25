@@ -4,6 +4,15 @@ const VehicleSchema = mongoose.Schema({
   name: {
     type: String,
   },
+  vehicleNumber:{
+    type: String,
+  },
+  email:{
+    type: String,
+  },
+  password:{
+    type: String,
+  },
   fuelType: {
     type: String,
   },

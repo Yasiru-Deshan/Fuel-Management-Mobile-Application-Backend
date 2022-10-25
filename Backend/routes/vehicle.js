@@ -3,7 +3,7 @@ const Station = require("../models/Station");
 const Vehicle = require("../models/Vehicle");
 
 //add vehicle
-router.post("/", async (req, res) => {
+router.post("/signup", async (req, res) => {
   const newVehicle = new Vehicle(req.body);
 
   try {
@@ -34,6 +34,16 @@ router.put("/pump/:id", async (req, res) => {
   }
 });
 
+//get vehicle history details
+router.get('/find/:id/history', async (req, res) => {
+    try {
+        const vehicle = await Vehicle.findById(req.params.id);
+        res.status(200).json(vehicle.history);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
 //get vehicle details
 router.get('/find/:id', async (req, res) => {
     try {
@@ -42,6 +52,50 @@ router.get('/find/:id', async (req, res) => {
     } catch (err) {
         res.status(500).json(err);
     }
+});
+
+//signup vehicle
+router.post("/reg", (req, res) => {
+  const newUser = {
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password,
+    vehicleNumber: req.body.vehicleNumber,
+    fuelType: req.body.fuelType
+  };
+
+  const query = { email: newUser.email };
+
+  Vehicle.findOne(query, (err, result) => {
+    if (result == null) {
+      Vehicle.save(newUser, (err, result) => {
+        res.status(200).send();
+      });
+    } else {
+      res.status(400).send();
+    }
+  });
+});
+
+//login
+router.post("/login", (req, res) => {
+  const query = {
+    email: req.body.email,
+    password: req.body.password,
+  };
+
+  Vehicle.findOne(query, (err, result) => {
+    if (result != null) {
+      const objToSend = {
+        name: result.name,
+        email: result.email,
+      };
+
+      res.status(200).send(JSON.stringify(objToSend));
+    } else {
+      res.status(404).send();
+    }
+  });
 });
 
 module.exports = router;

@@ -92,6 +92,26 @@ router.get("/find/:id", async (req, res) => {
   }
 });
 
+//get petrol queue
+router.get("/find/:id/petrol", async (req, res) => {
+  try {
+    const station = await Station.findById(req.params.id);
+    res.status(200).json(station.petrolQueue);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+//get petrol queue
+router.get("/find/:id/diesel", async (req, res) => {
+  try {
+    const station = await Station.findById(req.params.id);
+    res.status(200).json(station.dieselQueue);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 //get all stations
 router.get("/find/", async (req, res) => {
   Station.find()

@@ -7,6 +7,7 @@ require("dotenv").config();
 //Routes
 const stationRoute = require("./routes/station");
 const vehicleRoute = require("./routes/vehicle");
+const userRoute = require("./routes/user");
 
 const app = express();
 app.use(cors());
@@ -17,6 +18,7 @@ app.use(express.json({ extended: false }));
 
 app.use("/api/station", stationRoute);
 app.use("/api/vehicle", vehicleRoute);
+app.use("/", userRoute);
 
 const PORT = process.env.PORT || 8070;
 
