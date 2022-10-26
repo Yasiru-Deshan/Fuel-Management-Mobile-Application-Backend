@@ -21,7 +21,7 @@ router.put("/pump/:id", async (req, res) => {
 
     const qty = req.body.quantity;
 
-    const balance = 20 - qty;
+    const balance = vehicle.balance - qty;
 
     await vehicle.updateOne({ $set: {balance: balance} });
     await vehicle.updateOne({
@@ -53,6 +53,34 @@ router.get('/find/:id', async (req, res) => {
         res.status(500).json(err);
     }
 });
+
+//get vehicle by name
+router.get('/findname', async (req, res) => {
+  const query = {
+    name: req.body.name
+  }
+
+  const vehicle = await Vehicle.findOne(query);
+    if (vehicle != null) {
+      res.status(200).send(vehicle);
+    } else {
+      res.status(404).send();
+    }
+  });
+
+  //get vehicle by email
+router.get('/finduser', async (req, res) => {
+  const query = {
+    email: req.body.email
+  }
+
+  const vehicle = await Vehicle.findOne(query);
+    if (vehicle != null) {
+      res.status(200).send(vehicle);
+    } else {
+      res.status(404).send();
+    }
+  });
 
 //signup vehicle
 router.post("/reg", (req, res) => {

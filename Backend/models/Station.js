@@ -1,26 +1,38 @@
 const mongoose = require("mongoose");
 
 const StationSchema = mongoose.Schema({
-  stationCode:{
-    type: String
-    },
+  stationCode: {
+    type: String,
+  },
   name: {
     type: String,
   },
-  location:{
-    type: String
+  username:{
+    type: String,
+  },
+  email: {
+    type: String,
+  },
+  password: {
+    type: String,
+  },
+  location: {
+    type: String,
   },
   available: {
     type: Boolean,
   },
-  arrivalDate:{
-    type: Date
+  arrivalDate: {
+    type: Date,
   },
-  finishTime:{
-    type: Date
+  arrivalQuantity:{
+    type: Number,
   },
-  arrivalType:{
-    type: String
+  finishTime: {
+    type: Date,
+  },
+  arrivalType: {
+    type: String,
   },
   dieselQueue: [
     {
@@ -53,6 +65,9 @@ const StationSchema = mongoose.Schema({
       },
       balance: {
         type: String,
+      },
+      last_updated: {
+        type: Date,
       },
     },
   ],

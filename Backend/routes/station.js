@@ -69,7 +69,7 @@ router.post('/', async(req,res)=>{
 });
 
 //add arrival details
-router.put("/:id", async (req, res) => {
+router.put("/arrival/:id", async (req, res) => {
 
   try {
     const vehicle = await Station.findById(req.params.id);
@@ -81,6 +81,22 @@ router.put("/:id", async (req, res) => {
     res.status(500).json(err);
   }
 });
+
+//change availability 
+router.put("/:id", async (req, res) => {
+
+  try {
+    const vehicle = await Station.findById(req.params.id);
+
+    await vehicle.updateOne({ $set: req.body });
+    res.status(200).json("Availability updated");
+
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+
 
 //get station details
 router.get("/find/:id", async (req, res) => {
@@ -102,7 +118,7 @@ router.get("/find/:id/petrol", async (req, res) => {
   }
 });
 
-//get petrol queue
+//get diesel queue
 router.get("/find/:id/diesel", async (req, res) => {
   try {
     const station = await Station.findById(req.params.id);
@@ -122,5 +138,44 @@ router.get("/find/", async (req, res) => {
       console.log(err);
     });
 });
+
+//get petrol queue
+router.get("/find/:id/wait", async (req, res) => {
+  try {
+
+    // let options = {
+    //   projection: {
+    //     "petrolQueue.$": 1,
+    //   },
+    // };
+    const station = await Station.findById(req.params.id);
+    //const first = station.findOne({projection:{ "petrolQueue.$": 1} });
+    res.status(200).json(station.petrolQueue);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+//login station
+router.post("/login", (req, res) => {
+  const query = {
+    email: req.body.email,
+    password: req.body.password,
+  };
+
+  Station.findOne(query, (err, result) => {
+    if (result != null) {
+      const objToSend = {
+        name: result.name,
+        email: result.email,
+      };
+
+      res.status(200).send(JSON.stringify(objToSend));
+    } else {
+      res.status(404).send();
+    }
+  });
+});
+
 
 module.exports = router;
